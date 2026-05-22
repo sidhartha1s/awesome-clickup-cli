@@ -35,9 +35,6 @@ func newTaskCommentCreateTaskCmd(flags *rootFlags) *cobra.Command {
 				if !cmd.Flags().Changed("comment-text") && !flags.dryRun {
 					return fmt.Errorf("required flag \"%s\" not set", "comment-text")
 				}
-				if !cmd.Flags().Changed("notify-all") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "notify-all")
-				}
 			}
 			c, err := flags.newClient()
 			if err != nil {

@@ -29,14 +29,8 @@ func newListCommentCreateListCmd(flags *rootFlags) *cobra.Command {
 				return cmd.Help()
 			}
 			if !stdinBody {
-				if !cmd.Flags().Changed("assignee") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "assignee")
-				}
 				if !cmd.Flags().Changed("comment-text") && !flags.dryRun {
 					return fmt.Errorf("required flag \"%s\" not set", "comment-text")
-				}
-				if !cmd.Flags().Changed("notify-all") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "notify-all")
 				}
 			}
 			c, err := flags.newClient()

@@ -26,7 +26,7 @@ Secure ClickUp CLI with git integration, AI assistant integrations, offline sear
 ## Prerequisites: Install the CLI
 
 ```bash
-go install github.com/sidhartha1s/awesome-clickup-cli/cmd/awesome-clickup-cli@latest
+go install github.com/sidhartha1s/awesome-clickup-cli@latest
 ```
 
 Then authenticate:

@@ -1,0 +1,51 @@
+version: 2
+project_name: clickup-reference-pp-cli
+changelog:
+  disable: true
+builds:
+  - id: clickup-reference-pp-cli
+    main: ./cmd/clickup-reference-pp-cli
+    binary: clickup-reference-pp-cli
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X clickup-reference-pp-cli/internal/cli.version={{ .Version }}
+    targets:
+      - darwin_amd64
+      - darwin_arm64
+      - linux_amd64
+      - linux_arm64
+      - windows_amd64
+      - windows_arm64
+  - id: clickup-reference-pp-mcp
+    main: ./cmd/clickup-reference-pp-mcp
+    binary: clickup-reference-pp-mcp
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+    targets:
+      - darwin_amd64
+      - darwin_arm64
+      - linux_amd64
+      - linux_arm64
+      - windows_amd64
+      - windows_arm64
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+checksum:
+  name_template: checksums.txt
+brews:
+  - name: clickup-reference-pp-cli
+    repository:
+      owner: sidhartha1s
+      name: homebrew-tap
+    homepage: "https://github.com/sidhartha1s/clickup-reference-pp-cli"
+    description: "Every ClickUp feature from triptechtravel/clickup-cli plus secure credentials, offline search, and workload analytics"
+    install: |
+      bin.install "clickup-reference-pp-cli"
+      bin.install "clickup-reference-pp-mcp"

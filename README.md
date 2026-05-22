@@ -105,11 +105,17 @@ codex mcp add clickup --command "awesome-clickup-cli mcp-server"
 # Get task details
 awesome-clickup-cli task get TASK_ID
 
-# Create a task
-awesome-clickup-cli task create --list-id LIST_ID --name "New task"
+# List tasks in a list
+awesome-clickup-cli list task get LIST_ID
+
+# Create a task in a list
+awesome-clickup-cli list task create LIST_ID --name "New task"
 
 # Update task status
 awesome-clickup-cli task update TASK_ID --status "in progress"
+
+# Add a comment
+awesome-clickup-cli task comment create TASK_ID --comment-text "Your comment"
 
 # Search tasks
 awesome-clickup-cli search "keyword" --agent
@@ -163,14 +169,21 @@ This enables:
 ## All Commands
 
 ### Task Management
-- `task get`, `task list`, `task create`, `task update`, `task delete`
-- `comment create`, `comment list`, `comment delete`
-- `checklist create`, `checklist edit`, `checklist delete`
+- `task get <id>` - Get task details
+- `task update <id>` - Update task
+- `task delete <id>` - Delete task
+- `list task get <list_id>` - List tasks in a list
+- `list task create <list_id>` - Create task in list
+- `task comment create <task_id>` - Add comment
+- `task comment get <task_id>` - List comments
 
 ### Organization
-- `space list`, `space get`, `space create`
-- `folder list`, `folder get`, `folder create`
-- `list list`, `list get`, `list create`
+- `team list` - List workspaces
+- `team space get <team_id>` - List spaces in workspace
+- `space get <space_id>` - Get space details
+- `space folder get <space_id>` - List folders in space
+- `folder list get <folder_id>` - List lists in folder
+- `list get <list_id>` - Get list details
 
 ### Views & Goals
 - `view list`, `view get`, `view create`

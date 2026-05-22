@@ -111,9 +111,10 @@ awesome-clickup-cli search "keyword" --data-source local --agent
 
 ### Task Management
 - `awesome-clickup-cli task get <id>` — Get task details
-- `awesome-clickup-cli task list --list-id <id>` — List tasks
-- `awesome-clickup-cli task create --list-id <id> --name "Name"` — Create task
+- `awesome-clickup-cli list task get <list_id>` — List tasks in a list
+- `awesome-clickup-cli list task create <list_id> --name "Name"` — Create task
 - `awesome-clickup-cli task update <id> --status "in progress"` — Update task
+- `awesome-clickup-cli task comment create <id> --comment-text "Comment"` — Add comment
 
 ### Search & Analytics
 - `awesome-clickup-cli search "query"` — Full-text search
@@ -122,13 +123,10 @@ awesome-clickup-cli search "keyword" --data-source local --agent
 - `awesome-clickup-cli orphans` — Find orphaned tasks
 
 ### Organization
-- `awesome-clickup-cli space list` — List spaces
-- `awesome-clickup-cli folder list --space-id <id>` — List folders
-- `awesome-clickup-cli list list --folder-id <id>` — List lists
-
-### Comments
-- `awesome-clickup-cli comment create --task-id <id> --text "Comment"` — Add comment
-- `awesome-clickup-cli comment list --task-id <id>` — List comments
+- `awesome-clickup-cli team list` — List workspaces
+- `awesome-clickup-cli team space get <team_id>` — List spaces
+- `awesome-clickup-cli space folder get <space_id>` — List folders
+- `awesome-clickup-cli folder list get <folder_id>` — List lists
 
 ### AI Integrations
 - `awesome-clickup-cli integrations detect` — Detect installed AI tools

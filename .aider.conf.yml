@@ -1,0 +1,18 @@
+# Aider configuration with ClickUp integration
+# https://aider.chat/docs/config.html
+
+# Auto-commit with task context
+auto-commits: true
+
+# Include ClickUp context in prompts
+read:
+  - CLAUDE.md
+  - AGENTS.md
+
+# Custom commands for ClickUp integration
+# Use /run to execute these
+
+# Example workflow:
+# /run awesome-clickup-cli git status
+# /run awesome-clickup-cli task get <task-id> --agent
+# /run awesome-clickup-cli task update <task-id> --status "in progress"

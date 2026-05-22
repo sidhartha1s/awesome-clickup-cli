@@ -30,26 +30,7 @@ func newSpaceUpdateCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("admin-can-manage") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "admin-can-manage")
-				}
-				if !cmd.Flags().Changed("color") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "color")
-				}
-				if !cmd.Flags().Changed("features") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "features")
-				}
-				if !cmd.Flags().Changed("multiple-assignees") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "multiple-assignees")
-				}
-				if !cmd.Flags().Changed("name") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "name")
-				}
-				if !cmd.Flags().Changed("private") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "private")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

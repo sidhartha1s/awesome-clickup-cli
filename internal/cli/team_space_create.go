@@ -28,12 +28,6 @@ func newTeamSpaceCreateCmd(flags *rootFlags) *cobra.Command {
 				return cmd.Help()
 			}
 			if !stdinBody {
-				if !cmd.Flags().Changed("features") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "features")
-				}
-				if !cmd.Flags().Changed("multiple-assignees") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "multiple-assignees")
-				}
 				if !cmd.Flags().Changed("name") && !flags.dryRun {
 					return fmt.Errorf("required flag \"%s\" not set", "name")
 				}

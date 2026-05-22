@@ -34,11 +34,7 @@ func newTeamTimeEntriesUpdateatimeEntryCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("tags") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "tags")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

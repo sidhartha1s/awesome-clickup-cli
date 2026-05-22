@@ -28,17 +28,7 @@ func newCommentUpdateCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("assignee") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "assignee")
-				}
-				if !cmd.Flags().Changed("comment-text") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "comment-text")
-				}
-				if !cmd.Flags().Changed("resolved") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "resolved")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

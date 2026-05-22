@@ -33,11 +33,7 @@ func newListUpdateCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("name") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "name")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

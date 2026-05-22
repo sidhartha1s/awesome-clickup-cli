@@ -30,26 +30,7 @@ func newGoalUpdateCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("add-owners") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "add-owners")
-				}
-				if !cmd.Flags().Changed("color") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "color")
-				}
-				if !cmd.Flags().Changed("description") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "description")
-				}
-				if !cmd.Flags().Changed("due-date") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "due-date")
-				}
-				if !cmd.Flags().Changed("name") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "name")
-				}
-				if !cmd.Flags().Changed("rem-owners") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "rem-owners")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

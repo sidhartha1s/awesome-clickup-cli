@@ -34,38 +34,7 @@ func newViewUpdateCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("columns") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "columns")
-				}
-				if !cmd.Flags().Changed("divide") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "divide")
-				}
-				if !cmd.Flags().Changed("filters") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "filters")
-				}
-				if !cmd.Flags().Changed("grouping") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "grouping")
-				}
-				if !cmd.Flags().Changed("name") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "name")
-				}
-				if !cmd.Flags().Changed("parent") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "parent")
-				}
-				if !cmd.Flags().Changed("settings") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "settings")
-				}
-				if !cmd.Flags().Changed("sorting") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "sorting")
-				}
-				if !cmd.Flags().Changed("team-sidebar") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "team-sidebar")
-				}
-				if !cmd.Flags().Changed("type") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "type")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

@@ -27,17 +27,7 @@ func newWebhookUpdateCmd(flags *rootFlags) *cobra.Command {
 			if len(args) == 0 {
 				return cmd.Help()
 			}
-			if !stdinBody {
-				if !cmd.Flags().Changed("endpoint") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "endpoint")
-				}
-				if !cmd.Flags().Changed("events") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "events")
-				}
-				if !cmd.Flags().Changed("status") && !flags.dryRun {
-					return fmt.Errorf("required flag \"%s\" not set", "status")
-				}
-			}
+			// Update commands: no required flags - only update what's specified
 			c, err := flags.newClient()
 			if err != nil {
 				return err

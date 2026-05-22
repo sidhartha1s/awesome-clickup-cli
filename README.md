@@ -22,7 +22,7 @@ Built with security-first design. Integrates seamlessly with Codex, Claude, Herm
 
 ```bash
 # Install
-go install github.com/sidhartha1s/awesome-clickup-cli@latest
+go install github.com/sidhartha1s/awesome-clickup-cli/cmd/awesome-clickup-cli@latest
 
 # Authenticate
 awesome-clickup-cli auth set-token YOUR_API_TOKEN

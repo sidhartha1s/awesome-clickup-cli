@@ -1,236 +1,70 @@
-# Awesome ClickUp CLI
+# awesome-clickup-cli
 
-[![Go](https://img.shields.io/badge/Go-1.26+-00ADD8?style=flat&logo=go)](https://go.dev)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+A Go CLI for ClickUp with git branch task detection, AI assistant integrations, an MCP server, offline search, and workload analytics.
 
-**The most feature-complete ClickUp CLI with git integration and AI assistant support.**
+## What it does
 
-Built with security-first design. Integrates seamlessly with Codex, Claude, Hermes, OpenClaw, and Aider.
+- Wraps 82+ ClickUp API endpoints: tasks, lists, folders, spaces, teams, views, goals, comments.
+- Detects the ClickUp task ID from the current git branch name and links PRs/branches to it.
+- Generates integration configs for Codex, Claude Code, Hermes Agent, OpenClaw Gateway, and Aider, and can run itself as an MCP server.
+- Syncs data to a local SQLite store (FTS5) for offline full-text search.
+- Runs workload analytics: stale-task detection, team load distribution, orphaned-task detection.
+- Every command accepts `--agent` for JSON output, no color, non-interactive mode, and auto-confirm.
 
-## Why This CLI?
-
-| Feature | This CLI | Others |
-|---------|----------|--------|
-| **Git integration** | ✅ Auto-detect task from branch, link PRs | ❌ |
-| **AI integrations** | ✅ Codex, Claude, Hermes, OpenClaw, Aider | ❌ |
-| **MCP server** | ✅ Model Context Protocol support | ❌ |
-| **Secure credentials** | ✅ 0o600 permissions, keyring | ⚠️ Plaintext |
-| **Offline search** | ✅ FTS5 SQLite | Partial |
-| **API coverage** | 82+ endpoints | ~45 |
-
-## Quick Start
+## Install
 
 ```bash
-# Install
 go install github.com/sidhartha1s/awesome-clickup-cli@latest
-
-# Authenticate
 awesome-clickup-cli auth set-token YOUR_API_TOKEN
-
-# Verify
 awesome-clickup-cli doctor
 ```
 
-## Git Integration
-
-Auto-detect ClickUp tasks from your branch name:
+## Usage
 
 ```bash
-# On branch: feature/CU-abc123-add-login
-awesome-clickup-cli git status
-# → Task ID: abc123
-# → URL: https://app.clickup.com/t/abc123
+# Git integration
+awesome-clickup-cli git status          # detect task from branch
+awesome-clickup-cli git link-pr         # link current PR to the detected task
+awesome-clickup-cli git link-branch     # link branch to task
 
-# Link your PR to the task
-awesome-clickup-cli git link-pr
+# Task management
+awesome-clickup-cli task get TASK_ID
+awesome-clickup-cli task update TASK_ID --status "in progress"
+awesome-clickup-cli list task create LIST_ID --name "New task"
+awesome-clickup-cli task comment create TASK_ID --comment-text "Your comment"
 
-# Link branch to task
-awesome-clickup-cli git link-branch
-```
+# Search and analytics
+awesome-clickup-cli search "keyword" --agent
+awesome-clickup-cli stale --days 7
+awesome-clickup-cli load
+awesome-clickup-cli orphans
 
-Supported patterns:
-- `feature/CU-abc123-description`
-- `bugfix/CLICKUP-xyz789-fix`
-- `#abc123-quick-fix`
+# Offline
+awesome-clickup-cli sync
+awesome-clickup-cli search "query" --data-source local
 
-## AI Assistant Integrations
-
-Generate integration configs for your favorite AI coding assistants:
-
-```bash
-# Detect installed AI tools
+# AI assistant integrations
 awesome-clickup-cli integrations detect
-
-# Generate all integrations
 awesome-clickup-cli integrations all
-
-# Or generate specific ones:
-awesome-clickup-cli integrations codex     # AGENTS.md for Codex CLI
-awesome-clickup-cli integrations claude    # CLAUDE.md + MCP config
-awesome-clickup-cli integrations hermes    # Python plugin for Hermes Agent
-awesome-clickup-cli integrations openclaw  # Python plugin for OpenClaw Gateway
-awesome-clickup-cli integrations aider     # .aider.conf.yml
-```
-
-### MCP Server Mode
-
-Run as an MCP server for any Model Context Protocol client:
-
-```bash
 awesome-clickup-cli mcp-server
 ```
 
-Add to Claude's `~/.claude.json`:
-```json
-{
-  "mcpServers": {
-    "clickup": {
-      "command": "awesome-clickup-cli",
-      "args": ["mcp-server"]
-    }
-  }
-}
-```
+Branch naming patterns that auto-detect a task: `feature/CU-abc123-description`, `bugfix/CLICKUP-xyz789-fix`, `#abc123-quick-fix`.
 
-Add to Codex:
-```bash
-codex mcp add clickup --command "awesome-clickup-cli mcp-server"
-```
+## Layout
 
-## Core Features
+| Path | Role |
+|------|------|
+| `cmd/` | Binary entry points |
+| `internal/` | Core CLI logic (256 files: commands, API client, cache, MCP tool defs) |
+| `CLAUDE.md`, `AGENTS.md`, `SKILL.md` | Generated integration docs for Claude Code, Codex, and Claude Code skills |
+| `CONTRIBUTING.md`, `LICENSE`, `NOTICE` | Apache-2.0 project files |
+| `Makefile` | Build, test, lint, install targets |
 
-### Task Management
+## Notes / Gotchas
 
-```bash
-# Get task details
-awesome-clickup-cli task get TASK_ID
-
-# List tasks in a list
-awesome-clickup-cli list task get LIST_ID
-
-# Create a task in a list
-awesome-clickup-cli list task create LIST_ID --name "New task"
-
-# Update task status
-awesome-clickup-cli task update TASK_ID --status "in progress"
-
-# Add a comment
-awesome-clickup-cli task comment create TASK_ID --comment-text "Your comment"
-
-# Search tasks
-awesome-clickup-cli search "keyword" --agent
-```
-
-### Analytics
-
-```bash
-# Find stale tasks
-awesome-clickup-cli stale --days 7
-
-# Team workload analysis
-awesome-clickup-cli load
-
-# Find orphaned tasks
-awesome-clickup-cli orphans
-```
-
-### Offline Capabilities
-
-```bash
-# Sync data locally
-awesome-clickup-cli sync
-
-# Search offline
-awesome-clickup-cli search "query" --data-source local
-```
-
-## Agent Mode
-
-All commands support `--agent` flag for AI assistant integration:
-
-```bash
-awesome-clickup-cli task get TASK_ID --agent
-```
-
-This enables:
-- JSON output
-- Non-interactive mode
-- Compact response
-- No color codes
-- Auto-confirm prompts
-
-## Security
-
-- Credentials stored with **0o600 permissions** (owner-only)
-- No plaintext fallback
-- OS keyring support via [go-keyring](https://github.com/zalando/go-keyring)
-- Token never exposed in command output
-
-## All Commands
-
-### Task Management
-- `task get <id>` - Get task details
-- `task update <id>` - Update task
-- `task delete <id>` - Delete task
-- `list task get <list_id>` - List tasks in a list
-- `list task create <list_id>` - Create task in list
-- `task comment create <task_id>` - Add comment
-- `task comment get <task_id>` - List comments
-
-### Organization
-- `team list` - List workspaces
-- `team space get <team_id>` - List spaces in workspace
-- `space get <space_id>` - Get space details
-- `space folder get <space_id>` - List folders in space
-- `folder list get <folder_id>` - List lists in folder
-- `list get <list_id>` - Get list details
-
-### Views & Goals
-- `view list`, `view get`, `view create`
-- `goal list`, `goal get`, `goal create`
-
-### Git Integration
-- `git status` - Detect task from branch
-- `git link-pr` - Link PR to task
-- `git link-branch` - Link branch to task
-
-### Analytics
-- `stale` - Find stale tasks
-- `load` - Workload analysis
-- `orphans` - Find orphaned tasks
-- `search` - Full-text search
-
-### AI Integrations
-- `integrations detect` - Find installed AI tools
-- `integrations all` - Generate all configs
-- `integrations codex` - Codex AGENTS.md
-- `integrations claude` - Claude CLAUDE.md + MCP
-- `integrations hermes` - Hermes plugin
-- `integrations openclaw` - OpenClaw plugin
-- `integrations aider` - Aider config
-- `mcp-server` - Run as MCP server
-
-### Utility
-- `doctor` - Health check
-- `sync` - Sync data locally
-- `auth set-token` - Set API token
-- `auth status` - Check auth status
-- `profile save/list` - Save command profiles
-
-## Configuration
-
-```bash
-# Set default profile
-awesome-clickup-cli profile save default --compact --json
-
-# Use profile
-awesome-clickup-cli task list --profile default
-```
-
-## Contributing
-
-Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
-
-## License
-
-Apache-2.0. See [LICENSE](LICENSE).
+- Credentials are stored with `0o600` permissions via OS keyring (`go-keyring`); no plaintext fallback, token never printed.
+- Config profiles: `awesome-clickup-cli profile save default --compact --json`, then `--profile default` on later commands.
+- MCP server mode: `awesome-clickup-cli mcp-server`, registered in `~/.claude.json` under `mcpServers.clickup`.
+- The Makefile's `build`/`install` targets point at `./cmd/clickup-reference-pp-cli` and `./cmd/clickup-reference-pp-mcp`, not `./cmd/awesome-clickup-cli`. A commit renaming these directories ("Fix: rename cmd directories for proper go install") was later reverted, so confirm the actual `cmd/` subdirectory names before trusting `make build` or `make install`.
+- License: Apache-2.0 (`LICENSE`, `NOTICE`).
